@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS rooms (
+  code VARCHAR(6) PRIMARY KEY,
+  state TEXT NOT NULL,
+  version INTEGER NOT NULL DEFAULT 0,
+  expires BIGINT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS rooms_expiry ON rooms (expires);
