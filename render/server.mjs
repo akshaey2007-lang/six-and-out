@@ -1,15 +1,19 @@
-import pg from "pg";
 import {createStore} from "./store.mjs";
 import {createApp} from "./app.mjs";
+import {databasePool} from "./database.mjs";
+import {migrateRooms} from "./migrate.mjs";
 
 if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required for multiplayer room storage.");
-const databaseUrl = new URL(process.env.DATABASE_URL);
-// Render's external database endpoints require TLS. Internal endpoints use its private network.
-const ssl = databaseUrl.hostname.endsWith(".render.com") ? {rejectUnauthorized: true} : undefined;
-const pool = new pg.Pool({connectionString: process.env.DATABASE_URL, max: 5, connectionTimeoutMillis: 10000, ssl});
-pool.on("error", error => console.error("Database connection error:", error.code ?? error.name));
+const pool = databasePool(process.env.DATABASE_URL);
 const store = createStore(pool);
 await store.init();
+if (process.env.MIGRATE_DATABASE_URL) {
+  const source = databasePool(process.env.MIGRATE_DATABASE_URL);
+  try {
+    const result = await migrateRooms(source, pool);
+    console.log(`Room migration complete: ${result.copied} copied, ${result.available} available.`);
+  } finally {await source.end();}
+}
 await store.cleanup();
 const server = createApp(store);
 const cleanup = setInterval(() => store.cleanup().catch(error => console.error("Room cleanup error:", error.code ?? error.name)), 3600000);
