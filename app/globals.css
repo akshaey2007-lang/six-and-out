@@ -21,3 +21,13 @@
 
 @media(min-width:1200px){.move-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.move-card{padding:12px}.move-card .cricket-visual svg{height:100px}.move-card .visual-caption{min-height:36px}.move-card b{font-size:15px;line-height:1.35}.move-card>span:last-child{font-size:13px}}
 @media(max-width:760px){.match-main{padding-left:4%;padding-right:4%}.match-main .action-panel{padding-left:16px;padding-right:16px}.move-card{padding:11px}}
+
+/* Cricket symbols share a clear seam and remain crisp at every control size. */
+.cricket-icon{flex-shrink:0;display:inline-block;vertical-align:middle;pointer-events:none}
+.bowling-style-label{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.toss-choice{display:flex;align-items:center;justify-content:center;gap:10px;min-height:64px}
+.style-card>.style-symbol{width:86px;height:86px;padding:15px;border:1px solid #ffbf8538;border-radius:22px;color:#ffbf85;background:radial-gradient(circle at 30% 20%,#ffbf851c,#ffbf8505)}
+.style-card>.spin-symbol{color:#8ce4d1;border-color:#8ce4d138;background:radial-gradient(circle at 30% 20%,#8ce4d11c,#8ce4d105)}
+.style-card.selected>.style-symbol{color:var(--primary);border-color:#cefa6970;background:radial-gradient(circle at 30% 20%,#cefa692b,#cefa6908)}
+.style-card:hover{border-color:#6f8b85}.style-card.selected{border-color:var(--primary)}
+@media(max-width:760px){.style-card>.style-symbol{width:76px;height:76px;padding:13px;border-radius:19px}.toss-choice{gap:7px;font-size:15px;padding:12px 10px}}
